@@ -1,39 +1,46 @@
 services:
-  web:
-    image: nginx:alpine
-    container_name: grand-horizon-web
-    ports:
-      - "3000:80"
-    volumes:
-      - ./frontend:/usr/share/nginx/html:ro
-    restart: unless-stopped
 
-  database:
+  backend:
+    build: ./backend
+    container_name: grand-horizon-backend
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST:     db
+      DB_USER:     ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME:     ${MYSQL_DATABASE}
+      PORT:        3000
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - grand-horizon-network
+    restart: on-failure
+
+  db:
     image: mysql:8.0
     container_name: grand-horizon-db
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - "3306:3306"
+      MYSQL_DATABASE:      ${MYSQL_DATABASE}
+      MYSQL_USER:          ${MYSQL_USER}
+      MYSQL_PASSWORD:      ${MYSQL_PASSWORD}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+      interval:     5s
+      timeout:      5s
+      retries:      10
       start_period: 30s
-    restart: unless-stopped
-
-  cache:
-    image: redis:alpine
-    container_name: grand-horizon-redis
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
+    networks:
+      - grand-horizon-network
 
 volumes:
-  mysql_data:
+  mysql-data:
+
+networks:
+  grand-horizon-network:
+    driver: bridge
