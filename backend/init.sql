@@ -9,11 +9,12 @@ SET NAMES utf8mb4;
 CREATE TABLE IF NOT EXISTS guests (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   full_name     VARCHAR(255) NOT NULL,
-  email         VARCHAR(255) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
-  phone         VARCHAR(30),
+  email         VARCHAR(255) NOT NULL UNIQUE,         -- No duplicate accounts
+  password_hash VARCHAR(255) NOT NULL,                -- NEVER plain text
+  phone         VARCHAR(30),                          -- Optional
   role          ENUM('guest', 'staff', 'admin') NOT NULL DEFAULT 'guest',
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- ── ROOM TYPES (category + pricing) ────────────────────
@@ -39,6 +40,32 @@ CREATE TABLE IF NOT EXISTS rooms (
     FOREIGN KEY (room_type_id) REFERENCES room_types(id)
     ON DELETE RESTRICT
 );
+
+
+-- ── BOOKINGS TABLE ─────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS bookings (
+  id               INT AUTO_INCREMENT PRIMARY KEY,
+  guest_id         INT NOT NULL,
+  room_id          INT NOT NULL,
+  check_in         DATE NOT NULL,
+  check_out        DATE NOT NULL,
+  num_guests       INT NOT NULL DEFAULT 1,
+  total_amount     DECIMAL(10, 2) NOT NULL,          -- nights x room_types.base_price
+  status           ENUM('pending', 'confirmed', 'checked_in', 'checked_out', 'cancelled')
+                   DEFAULT 'pending',
+  special_requests TEXT,
+  created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (guest_id) REFERENCES guests(id) ON DELETE CASCADE,
+  FOREIGN KEY (room_id)  REFERENCES rooms(id)  ON DELETE RESTRICT,
+  CONSTRAINT chk_booking_dates CHECK (check_out > check_in),
+  INDEX idx_guest_id  (guest_id),
+  INDEX idx_status    (status),
+  INDEX idx_room_dates (room_id, check_in, check_out)
+);
+
+
 
 -- ── SEED DATA (INSERT IGNORE = safe to re-run) ─────────
 INSERT IGNORE INTO room_types (id, name, capacity, base_price, description, badge) VALUES
