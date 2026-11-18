@@ -1,12 +1,12 @@
 const express = require('express');
 const cors    = require('cors');
 const db      = require('./db');
-
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/auth', require('./auth'));
 app.use(express.static('public'));        // Serve HTML/CSS from /public
 
 // Shared query: every room joined with its room type (name, price, capacity...)
