@@ -6,11 +6,11 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DB_HOST:     db
-      DB_USER:     ${MYSQL_USER}
+      DB_HOST: db
+      DB_USER: ${MYSQL_USER}
       DB_PASSWORD: ${MYSQL_PASSWORD}
-      DB_NAME:     ${MYSQL_DATABASE}
-      PORT:        3000
+      DB_NAME: ${MYSQL_DATABASE}
+      PORT: 3000
     depends_on:
       db:
         condition: service_healthy
@@ -23,23 +23,140 @@ services:
     container_name: grand-horizon-db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE:      ${MYSQL_DATABASE}
-      MYSQL_USER:          ${MYSQL_USER}
-      MYSQL_PASSWORD:      ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
       - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval:     5s
-      timeout:      5s
-      retries:      10
+      interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 30s
     networks:
       - grand-horizon-network
 
+  redis:
+    image: redis:7-alpine
+    container_name: grand-horizon-redis
+    ports:
+      - "6379:6379"
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - grand-horizon-network
+
+  mongo:
+    image: mongo:7
+    container_name: grand-horizon-mongo
+    ports:
+      - "27017:27017"
+    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      
+    volumes:
+      - mongo-data:/data/db
+    
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval:     10s
+      timeout:      5s
+      retries:      10
+      start_period: 20s
+
+    networks:
+      - grand-horizon-network
+
+  guest-service:
+    build: ./services/guest-service
+    container_name: grand-horizon-guest-service
+    ports:
+      - "3001:3001"
+    environment:
+      DB_HOST: db
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+      PORT: 3001
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3001/health > /dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - grand-horizon-network
+    restart: unless-stopped
+
+  room-service:
+    build: ./services/room-service
+    container_name: grand-horizon-room-service
+    ports:
+      - "3002:3002"
+    environment:
+      DB_HOST: db
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+      PORT: 3002
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3002/health > /dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - grand-horizon-network
+    restart: unless-stopped
+
+  booking-service:
+    build: ./services/booking-service
+    container_name: grand-horizon-booking-service
+    ports:
+      - "3003:3003"
+    environment:
+      MONGO_URL: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongo:27017/?authSource=admin
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      REDIS_URL: redis://redis:6379
+      GUEST_SERVICE_URL: http://guest-service:3001
+      ROOM_SERVICE_URL: http://room-service:3002
+      PORT: 3003
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      guest-service:
+        condition: service_started
+      room-service:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3003/health > /dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - grand-horizon-network
+    restart: unless-stopped
+
 volumes:
   mysql-data:
+  mongo-data:
 
 networks:
   grand-horizon-network:
