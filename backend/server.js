@@ -1,6 +1,33 @@
 const express = require('express');
 const cors    = require('cors');
 const db      = require('./db');
+
+// ════════════════════════════════════════════════════
+// 🟢 GUEST SERVICE ZONE  →  services/guest-service/
+//    Deps: express · mysql2 · bcrypt · cors
+//    DB:   MySQL  (guests table)
+//    EXISTS today (in auth.js):  POST /api/auth/register · POST /api/auth/login
+//    NEW in Lab 5.1:             GET /api/guests/:id
+// ════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════
+// 🔵 ROOM SERVICE ZONE  →  services/room-service/
+//    Deps: express · mysql2 · cors
+//    DB:   MySQL  (rooms + room_types tables)
+//    EXISTS today (in server.js): GET /api/rooms · GET /api/rooms/:id
+//                                 GET /api/rooms/type/:type · GET /api/room-types
+//    NEW in Lab 5.1:              nothing required (room lookup by id is already written)
+// ════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════
+// 🟣 BOOKING SERVICE ZONE  →  services/booking-service/
+//    Deps: express · mongodb · redis · cors
+//    DB:   MongoDB (bookings) + Redis (holds)
+//    EXISTS today: nothing — Lab 4.2 used redis-cli and mongosh only
+//    NEW in Lab 5.1: hold routes + booking routes (all written fresh)
+// ════════════════════════════════════════════════════
+
+
 const app  = express();
 const PORT = process.env.PORT || 3000;
 

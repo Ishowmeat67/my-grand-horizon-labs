@@ -1,0 +1,13 @@
+{
+  "name": "grand-horizon-booking-service",
+  "version": "1.0.0",
+  "description": "Grand Horizon Room Hold & Booking Service",
+  "main": "src/server.js",
+  "scripts": { "start": "node src/server.js" },
+  "dependencies": {
+    "cors":    "^2.8.5",
+    "express": "^4.18.2",
+    "mongodb": "^6.1.0",
+    "redis":   "^4.6.0"
+  }
+}
