@@ -240,6 +240,8 @@ app.delete('/api/holds/:guestId', async (req, res) => {
 });
 
 // ── POST /api/bookings — confirm   body: { guestId, specialRequests? } ─────
+
+
 // The hold (temporary, Redis) becomes a booking (permanent, MongoDB).
 app.post('/api/bookings', async (req, res) => {
   const guestId = Number(req.body.guestId);
