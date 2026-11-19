@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS room_types (
   base_price  DECIMAL(10, 2) NOT NULL,   -- price per night (RM)
   description TEXT,
   badge       VARCHAR(50),
+  rating      DECIMAL(2,1) DEFAULT NULL,
   created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -83,3 +84,12 @@ INSERT IGNORE INTO rooms (id, room_number, room_type_id, floor, status) VALUES
   (6, '301', 3, 3, 'available'),
   (7, '302', 3, 3, 'available'),
   (8, '401', 4, 4, 'available');
+
+-- Penthouse Suite (added in Lab 6.1)
+INSERT IGNORE INTO room_types (id, name, capacity, base_price, description, badge, rating)
+VALUES (5, 'Penthouse Suite', 4, 900.00, 'Top-floor penthouse with private terrace, lounge and city skyline view', NULL, 4.8);
+
+INSERT IGNORE INTO rooms (id, room_number, room_type_id, floor, status)
+VALUES (9, '601', 5, 6, 'available');
+
+
