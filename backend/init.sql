@@ -83,3 +83,10 @@ INSERT IGNORE INTO rooms (id, room_number, room_type_id, floor, status) VALUES
   (6, '301', 3, 3, 'available'),
   (7, '302', 3, 3, 'available'),
   (8, '401', 4, 4, 'available');
+
+-- Penthouse Suite (added in Lab 6.1)
+INSERT IGNORE INTO room_types (id, name, capacity, base_price, description, badge)
+VALUES (5, 'Penthouse Suite', 4, 900.00, 'Top-floor penthouse with private terrace, lounge and city skyline view', NULL);
+
+INSERT IGNORE INTO rooms (id, room_number, room_type_id, floor, status)
+VALUES (9, '601', 5, 6, 'available');
