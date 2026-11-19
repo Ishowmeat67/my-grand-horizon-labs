@@ -1,0 +1,264 @@
+<!-- Save as docs/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grand Horizon — Hotel Booking Platform</title>
+  <meta name="description" content="Grand Horizon: a microservices hotel booking platform built with Node.js, Docker, MySQL, Redis and MongoDB.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%A8%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:        #0a0d14;
+      --ink-2:      #10151f;
+      --panel:      #121826;
+      --line:       #263046;
+      --text:       #e9e4d8;
+      --muted:      #9aa3b5;
+      --gold:       #d8b45a;
+      --gold-soft:  #f1dfab;
+      --teal:       #6fc9bb;
+      --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --sans:  'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 85% -5%, rgba(216,180,90,.14), transparent 60%),
+        radial-gradient(700px 500px at -10% 30%, rgba(111,201,187,.07), transparent 60%),
+        var(--ink);
+      min-height: 100vh;
+    }
+    a { color: var(--gold); }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ── NAV ── */
+    nav { padding: 1.5rem 0; display: flex; justify-content: space-between; align-items: center; }
+    .mark { font-family: var(--serif); font-size: 1.35rem; letter-spacing: .08em; color: var(--gold-soft); }
+    nav ul { list-style: none; display: flex; gap: 1.75rem; }
+    nav a { text-decoration: none; color: var(--muted); font-size: .8rem; letter-spacing: .18em; text-transform: uppercase; transition: color .2s; }
+    nav a:hover { color: var(--gold-soft); }
+
+    /* ── HERO ── */
+    .hero { text-align: center; padding: 5.5rem 0 4rem; animation: rise .9s ease both; }
+    .eyebrow { font-size: .75rem; letter-spacing: .38em; text-transform: uppercase; color: var(--gold); }
+    h1 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(3.2rem, 11vw, 7rem);
+      line-height: 1;
+      margin: 1.25rem 0 1rem;
+      background: linear-gradient(180deg, #fbf1d3 0%, var(--gold) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: var(--gold-soft);
+    }
+    .sub { font-family: var(--serif); font-style: italic; font-size: clamp(1.2rem, 3vw, 1.6rem); color: var(--muted); max-width: 34rem; margin: 0 auto; }
+    .rule { width: 72px; height: 1px; background: var(--gold); margin: 2.25rem auto; opacity: .7; }
+    .stats { display: flex; justify-content: center; gap: clamp(1.5rem, 6vw, 4rem); flex-wrap: wrap; }
+    .stat b { display: block; font-family: var(--serif); font-weight: 500; font-size: 2.6rem; color: var(--gold-soft); line-height: 1.1; }
+    .stat span { font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--muted); }
+    .chips { display: flex; justify-content: center; flex-wrap: wrap; gap: .6rem; margin-top: 2.5rem; }
+    .chip { font-size: .78rem; letter-spacing: .08em; padding: .35rem .95rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: rgba(18,24,38,.6); }
+
+    /* ── SECTIONS ── */
+    section { padding: 4.5rem 0 1rem; }
+    .label { font-size: .72rem; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); }
+    h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(2rem, 5vw, 2.8rem); line-height: 1.15; margin: .5rem 0 1.5rem; color: var(--gold-soft); }
+    .lead { color: var(--muted); max-width: 40rem; margin-bottom: 2.25rem; }
+
+    /* ── DIAGRAM ── */
+    .diagram { background: linear-gradient(180deg, var(--panel), var(--ink-2)); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem; overflow-x: auto; }
+    .diagram svg { display: block; min-width: 640px; width: 100%; height: auto; }
+    .diagram .box   { fill: #151c2c; stroke: var(--line); stroke-width: 1.2; }
+    .diagram .gw    { fill: #1b2236; stroke: var(--gold); stroke-width: 1.4; }
+    .diagram .db    { fill: #0f1a1f; stroke: #2c6a63; stroke-width: 1.2; }
+    .diagram .t     { fill: var(--text); font: 500 14px var(--sans); text-anchor: middle; }
+    .diagram .s     { fill: var(--muted); font: 300 11.5px var(--sans); text-anchor: middle; }
+    .diagram .line  { stroke: #4a5876; stroke-width: 1.3; fill: none; }
+    .diagram .dash  { stroke: var(--gold); stroke-width: 1.3; fill: none; stroke-dasharray: 4 4; }
+    .legend { margin-top: .9rem; font-size: .8rem; color: var(--muted); }
+    .legend i { display: inline-block; width: 26px; border-top: 1.5px dashed var(--gold); vertical-align: middle; margin-right: .5rem; }
+
+    /* ── CARDS ── */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.1rem; margin-top: 2rem; }
+    .card { background: linear-gradient(180deg, var(--panel), var(--ink-2)); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem; transition: transform .25s, border-color .25s; }
+    .card:hover { transform: translateY(-4px); border-color: rgba(216,180,90,.55); }
+    .card .port { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--teal); }
+    .card h3 { font-family: var(--serif); font-weight: 600; font-size: 1.5rem; margin: .35rem 0 .5rem; color: var(--text); }
+    .card p { font-size: .92rem; color: var(--muted); }
+
+    /* ── HIGHLIGHTS ── */
+    .hl { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem 2.5rem; }
+    .hl li { padding-left: 1.4rem; position: relative; font-size: .95rem; color: var(--muted); }
+    .hl li::before { content: ""; position: absolute; left: 0; top: .7em; width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); }
+    .hl strong { display: block; color: var(--text); font-weight: 500; }
+
+    /* ── TERMINAL ── */
+    .term { background: #070a10; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .term-bar { display: flex; justify-content: space-between; align-items: center; padding: .6rem 1rem; border-bottom: 1px solid var(--line); background: var(--ink-2); }
+    .dots span { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #2b3550; margin-right: 6px; }
+    .term button { font: 400 .75rem var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--gold); background: transparent; border: 1px solid var(--line); border-radius: 6px; padding: .25rem .8rem; cursor: pointer; }
+    .term button:hover { border-color: var(--gold); }
+    .term pre { padding: 1.25rem 1.4rem; overflow-x: auto; font: 400 .9rem/1.8 ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; color: var(--teal); }
+    .term pre .c { color: #6a7692; }
+
+    footer { margin-top: 5rem; padding: 2.5rem 0 3rem; border-top: 1px solid var(--line); text-align: center; color: var(--muted); font-size: .82rem; letter-spacing: .08em; }
+    footer .mark { display: block; margin-bottom: .4rem; }
+
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .hero { animation: none; } .card { transition: none; } html { scroll-behavior: auto; } }
+    @media (max-width: 560px) { nav ul { gap: 1rem; } .hero { padding-top: 3.5rem; } }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <nav>
+      <span class="mark">GRAND HORIZON</span>
+      <ul>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#design">Design</a></li>
+        <li><a href="#start">Quick start</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <p class="eyebrow">Hotel Booking Platform</p>
+      <h1>Grand Horizon</h1>
+      <p class="sub">A cloud-native reservation system, built from small services that each do one thing well.</p>
+      <div class="rule"></div>
+      <div class="stats">
+        <div class="stat"><b>4</b><span>Services</span></div>
+        <div class="stat"><b>3</b><span>Databases</span></div>
+        <div class="stat"><b>1</b><span>Entry point</span></div>
+      </div>
+      <div class="chips">
+        <span class="chip">Node.js</span><span class="chip">Docker</span><span class="chip">MySQL</span>
+        <span class="chip">Redis</span><span class="chip">MongoDB</span><span class="chip">Docker Compose</span>
+      </div>
+    </header>
+
+    <section id="architecture">
+      <p class="label">Architecture</p>
+      <h2>One gateway, three focused services</h2>
+      <p class="lead">Every request enters through the API Gateway and is routed to the service that owns that data. Each service talks only to its own database.</p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 800 430" role="img" aria-label="Architecture diagram: a client calls the API Gateway on port 8000, which routes to the Guest, Room and Booking services. Guest and Room use MySQL. Booking uses Redis and MongoDB.">
+          <rect class="box" x="300" y="10" width="200" height="44" rx="8"/>
+          <text class="t" x="400" y="37">Browser / Client</text>
+
+          <path class="line" d="M400 54 V100"/>
+          <rect class="gw" x="280" y="100" width="240" height="58" rx="10"/>
+          <text class="t" x="400" y="125">API Gateway</text>
+          <text class="s" x="400" y="144">port 8000</text>
+
+          <path class="line" d="M400 158 V184 M400 184 H150 V212"/>
+          <path class="line" d="M400 184 V212"/>
+          <path class="line" d="M400 184 H650 V212"/>
+
+          <rect class="box" x="40"  y="212" width="220" height="64" rx="10"/>
+          <text class="t" x="150" y="238">Guest Service</text>
+          <text class="s" x="150" y="258">port 3001 · accounts &amp; login</text>
+
+          <rect class="box" x="290" y="212" width="220" height="64" rx="10"/>
+          <text class="t" x="400" y="238">Room Service</text>
+          <text class="s" x="400" y="258">port 3002 · rooms &amp; rates</text>
+
+          <rect class="box" x="540" y="212" width="220" height="64" rx="10"/>
+          <text class="t" x="650" y="238">Booking Service</text>
+          <text class="s" x="650" y="258">port 3003 · holds &amp; bookings</text>
+
+          <path class="dash" d="M540 244 H512"/>
+          <path class="dash" d="M540 262 C 470 330, 220 330, 190 278" />
+
+          <path class="line" d="M150 276 V322 H290 V350"/>
+          <path class="line" d="M400 276 V322 H290"/>
+          <rect class="db" x="195" y="350" width="190" height="50" rx="10"/>
+          <text class="t" x="290" y="372">MySQL</text>
+          <text class="s" x="290" y="390">guests · rooms · room types</text>
+
+          <path class="line" d="M650 276 V322 H565 V350"/>
+          <path class="line" d="M650 322 H715 V350"/>
+          <rect class="db" x="480" y="350" width="170" height="50" rx="10"/>
+          <text class="t" x="565" y="372">Redis</text>
+          <text class="s" x="565" y="390">room holds · 15 min expiry</text>
+          <rect class="db" x="665" y="350" width="110" height="50" rx="10"/>
+          <text class="t" x="720" y="372">MongoDB</text>
+          <text class="s" x="720" y="390">bookings</text>
+        </svg>
+        <p class="legend"><i></i>Dashed: the Booking Service looks up guests and rooms through their own APIs, never their tables.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card"><span class="port">Port 8000</span><h3>API Gateway</h3><p>The single door into the system. Routes auth, guest, room, hold and booking paths to the right service.</p></article>
+        <article class="card"><span class="port">Port 3001</span><h3>Guest Service</h3><p>Registration and login with bcrypt-hashed passwords. Guests, staff and admins are separate roles.</p></article>
+        <article class="card"><span class="port">Port 3002</span><h3>Room Service</h3><p>Room types, nightly rates, capacity and availability status, served from MySQL.</p></article>
+        <article class="card"><span class="port">Port 3003</span><h3>Booking Service</h3><p>Holds a room for 15 minutes in Redis, then confirms it as a permanent booking in MongoDB.</p></article>
+      </div>
+    </section>
+
+    <section id="design">
+      <p class="label">Design</p>
+      <h2>Decisions that make it reliable</h2>
+      <ul class="hl">
+        <li><strong>Holds that expire on their own</strong>An abandoned reservation frees the room automatically through a Redis TTL, with no clean-up job.</li>
+        <li><strong>Double-booking is blocked</strong>Date ranges are checked for overlap against confirmed bookings and other guests' active holds.</li>
+        <li><strong>The server sets the price</strong>Rates come from the Room Service and add-on prices from the server, so the total can't be edited in the browser.</li>
+        <li><strong>Booking snapshots</strong>Each booking stores the room and rate the guest agreed to, so later price changes never alter it.</li>
+        <li><strong>No secrets in code</strong>Every credential is read from environment variables and a git-ignored .env file.</li>
+        <li><strong>Health-checked containers</strong>Docker Compose starts each service only when the databases it needs report healthy.</li>
+      </ul>
+    </section>
+
+    <section id="start">
+      <p class="label">Quick start</p>
+      <h2>Up and running in four commands</h2>
+      <div class="term">
+        <div class="term-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <button type="button" id="copy">Copy</button>
+        </div>
+<pre id="cmds"><span class="c"># replace YOUR-USERNAME with your GitHub username</span>
+git clone https://github.com/YOUR-USERNAME/grand-horizon
+cd grand-horizon
+<span class="c"># copy .env.example to .env and choose your own passwords</span>
+cp .env.example .env
+docker compose up -d</pre>
+      </div>
+    </section>
+
+    <footer>
+      <span class="mark">GRAND HORIZON</span>
+      Built during the Introduction to Cloud Computing course · Week 6 Lab 6.1
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('copy');
+      var box = document.getElementById('cmds');
+      if (!btn || !box) return;
+      btn.addEventListener('click', function () {
+        var text = box.innerText;
+        try {
+          navigator.clipboard.writeText(text).then(function () {
+            btn.textContent = 'Copied';
+            setTimeout(function () { btn.textContent = 'Copy'; }, 1800);
+          });
+        } catch (e) { btn.textContent = 'Press Ctrl+C'; }
+      });
+    })();
+  </script>
+</body>
+</html>
