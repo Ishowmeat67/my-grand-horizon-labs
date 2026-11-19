@@ -90,3 +90,5 @@ VALUES (5, 'Penthouse Suite', 4, 900.00, 'Top-floor penthouse with private terra
 
 INSERT IGNORE INTO rooms (id, room_number, room_type_id, floor, status)
 VALUES (9, '601', 5, 6, 'available');
+
+
