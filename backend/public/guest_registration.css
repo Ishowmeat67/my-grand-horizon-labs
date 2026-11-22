@@ -1,0 +1,348 @@
+/* Color Palette & Font Setup */
+:root {
+  --gold: #c5a059;
+  --gold-hover: #b08d48;
+  --dark-charcoal: #121212;
+  --overlay: rgba(18, 18, 18, 0.72);
+  --border-muted: rgba(197, 160, 89, 0.25);
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Montserrat', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--dark-charcoal);
+  color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1. Top Utility Bar */
+.top-bar {
+  background: #080808;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  padding: 0.5rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.top-bar-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lang-switch span {
+  margin-right: 1.25rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.lang-switch span:hover {
+  color: var(--gold);
+}
+
+.top-bar-links a,
+.top-bar-links span {
+  margin-left: 1.5rem;
+  color: #aaa;
+  text-decoration: none;
+}
+
+.top-bar-links a:hover,
+.top-bar-links .active-item {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* 2. Main Luxury Header */
+.main-header {
+  background: rgba(18, 18, 18, 0.95);
+  padding: 1.4rem 2rem;
+  border-bottom: 1px solid var(--border-muted);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+}
+
+.header-inner {
+  max-width: 100%;
+  padding: 0 1.5rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: flex-start;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: flex-end;
+  margin-right: 0.5rem;
+}
+
+.nav-left a, .nav-right a {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: #dedede;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-left a:hover, .nav-right a:hover {
+  color: var(--gold);
+}
+
+.brand-logo {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
+}
+
+.logo-emblem {
+  color: var(--gold);
+  font-size: 1rem;
+  margin-bottom: -0.2rem;
+}
+
+.logo-title {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.logo-sub {
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  display: block;
+}
+
+.btn-book {
+  background: var(--gold);
+  color: #000000 !important;
+  padding: 0.55rem 1.4rem;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em;
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-book:hover {
+  background: var(--gold-hover);
+}
+
+/* 3. Hero Section */
+.hero-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4.5rem 1.5rem;
+  background-image: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--overlay);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+}
+
+.reg-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* Header Text */
+.reg-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.reg-pretitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.reg-title {
+  font-family: var(--font-serif);
+  font-size: 2.85rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0.5rem 0;
+  letter-spacing: 0.05em;
+}
+
+.gold-divider {
+  width: 48px;
+  height: 2px;
+  background: var(--gold);
+  margin: 0.8rem auto 1rem;
+}
+
+.reg-intro {
+  font-size: 0.88rem;
+  color: #ccc;
+  max-width: 550px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Form Card */
+.form-card {
+  background: rgba(18, 18, 18, 0.92);
+  border: 1px solid var(--border-muted);
+  padding: 3rem;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field label {
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.input-field input,
+.input-field select {
+  background: #1c1c1c;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+  outline: none;
+  font-family: var(--font-sans);
+  transition: border-color 0.2s;
+}
+
+.input-field input:focus,
+.input-field select:focus {
+  border-color: var(--gold);
+}
+
+.form-action {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.btn-submit {
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-sans);
+}
+
+.btn-submit:hover {
+  background: var(--gold-hover);
+  transform: translateY(-1px);
+}
+
+.terms-note {
+  font-size: 0.7rem;
+  color: #777;
+  margin-top: 1rem;
+  line-height: 1.5;
+}
+
+/* Response Message */
+.response-box {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  font-size: 0.82rem;
+  text-align: center;
+  border: 1px solid var(--gold);
+  background: rgba(197, 160, 89, 0.1);
+  color: #ffffff;
+}
+
+.response-box.error {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
+
+/* 4. Footer */
+.main-footer {
+  background: #090909;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.8rem 2rem;
+  text-align: center;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: #666;
+}
+
+.footer-inner p {
+  margin-bottom: 0.35rem;
+}
+
+.sub-footer {
+  color: var(--gold);
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nav-left, .nav-right { display: none; }
+  .form-row { grid-template-columns: 1fr; }
+  .form-card { padding: 2rem 1.5rem; }
+  .reg-title { font-size: 2.2rem; }
+}
