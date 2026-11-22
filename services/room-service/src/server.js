@@ -91,6 +91,26 @@ app.get('/api/rooms/:id', async (req, res) => {
   }
 });
 
+
+
+function validateRating(rating) {
+  if (rating === undefined || rating === null) {
+    return { valid: false, error: 'Rating is required' };
+  }
+  if (typeof rating !== 'number' || Number.isNaN(rating)) {
+    return { valid: false, error: 'Rating must be a number' };
+  }
+  if (!Number.isInteger(rating)) {
+    return { valid: false, error: 'Rating must be a whole number' };
+  }
+  if (rating < 1 || rating > 10) {
+    return { valid: false, error: 'Rating must be between 1 and 5' };
+  }
+  return { valid: true };
+}
+module.exports = { validateRating };
+
+
 app.listen(PORT, () =>
   console.log(`[room-service] Running on http://localhost:${PORT}`)
 );
