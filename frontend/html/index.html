@@ -1,100 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grand Horizon Hotel — Online Booking</title>
-  <link rel="stylesheet" href="../css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reserve Your Stay | Grand Horizon Hotels &amp; Resorts</title>
+<link rel="stylesheet" href="../css/booking.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+<aside class="top-bar"><div class="top-bar-inner"><div class="lang-switch"><span>ENGLISH</span><span>BAHASA MELAYU</span><span>中文</span></div><div class="top-bar-links"><a href="#booking-section">MY RESERVATION</a><a href="guest_registration.html">GUEST SIGN UP</a></div></div></aside>
+<header class="main-header"><div class="header-inner"><nav class="nav-left"><a href="#">DESTINATIONS</a><a href="home.html">SUITES &amp; VILLAS</a><a href="#">EXPERIENCES</a></nav><div class="brand-logo"><div class="logo-emblem">✦</div><h1 class="logo-title">GRAND HORIZON</h1><span class="logo-sub">HOTELS &amp; RESORTS</span></div><nav class="nav-right"><a href="#">OFFERS</a><a href="#">WELLNESS</a><a href="#booking-section" class="btn-book">BOOK NOW</a></nav></div></header>
+<main class="hero-wrapper" id="booking-section"><div class="hero-backdrop"></div><div class="booking-container">
+<section class="booking-header"><span class="booking-pretitle">BESPOKE ACCOMMODATIONS</span><h2 class="booking-title">Reserve Your Sanctuary</h2><div class="gold-divider"></div><p class="booking-intro">Enter your booking ID, choose your room type, and select the dates and arrangements for your stay.</p></section>
+<div class="booking-card-grid"><section class="form-card"><h3 class="form-title">Reservation Details</h3>
+<form id="reservationForm">
+<div class="form-row"><div class="input-field"><label for="guest_id">GUEST ID *</label>
+<input type="number" id="guest_id" name="guest_id"
+       min="1" placeholder="Enter your registered Guest ID" required>
+<small class="field-hint">
+    Enter the ID assigned when you registered as a guest.
+</small></div>
+<div class="input-field"><label for="room_type">ROOM TYPE *</label><select id="room_type" name="room_type" required><option value="" disabled selected>-- Select a room type --</option><option value="Deluxe Ocean Suite" data-rate="450">Deluxe Ocean Suite — RM 450/night</option><option value="Grand Horizon Villa" data-rate="850">Grand Horizon Villa — RM 850/night</option><option value="Executive Pavilion" data-rate="620">Executive Grand Pavilion — RM 620/night</option><option value="Presidential Penthouse" data-rate="1400">Presidential Royal Penthouse — RM 1,400/night</option></select></div>
+<div class="form-row"><div class="input-field"><label for="check_in_date">CHECK-IN DATE *</label><input type="date" id="check_in_date" name="check_in_date" required></div><div class="input-field"><label for="check_out_date">CHECK-OUT DATE *</label><input type="date" id="check_out_date" name="check_out_date" required></div></div>
+<div class="form-row"><div class="input-field"><label for="number_of_rooms">NUMBER OF ROOMS *</label><input type="number" id="number_of_rooms" name="number_of_rooms" min="1" max="20" value="1" required></div><div class="input-field"><label for="number_of_guests">NUMBER OF GUESTS *</label><input type="number" id="number_of_guests" name="number_of_guests" min="1" max="50" value="1" required></div></div>
+<div class="form-row"><div class="input-field"><label for="payment_method">PAYMENT METHOD *</label><select id="payment_method" name="payment_method" required><option value="" disabled selected>-- Select payment method --</option><option value="Credit card">Credit card</option><option value="Debit card">Debit card</option><option value="PayPal">PayPal</option><option value="Check">Check</option></select></div></div>
+<div class="form-action"><button type="submit" class="btn-submit">CONFIRM RESERVATION</button></div></form>
+<div id="bookingNotice" class="response-box" style="display:none" role="status" aria-live="polite"></div></section>
+<aside class="summary-card"><h3 class="summary-title">Booking Summary</h3><div class="summary-divider"></div><div class="summary-item"><span class="label">Guest ID:</span><span class="value" id="summaryId">Not entered</span></div><div class="summary-item"><span class="label">Room Type:</span><span class="value" id="summaryRoom">None Selected</span></div><div class="summary-item"><span class="label">Nightly Rate:</span><span class="value" id="summaryRate">RM 0.00</span></div><div class="summary-item"><span class="label">Stay Duration:</span><span class="value" id="summaryDuration">0 Nights</span></div><div class="summary-item"><span class="label">Rooms:</span><span class="value" id="summaryRooms">1</span></div><div class="summary-item"><span class="label">Guests:</span><span class="value" id="summaryGuests">1</span></div><div class="summary-divider"></div><div class="summary-item total"><span class="label">Estimated Total:</span><span class="value" id="summaryTotal">RM 0.00</span></div><div class="guarantee-box"><span class="guarantee-icon">✦</span><p>Review your reservation details before submitting. Booking status and creation time are managed by the booking service.</p></div></aside></div></div></main>
+<footer class="main-footer"><div class="footer-inner"><p>© 2026 GRAND HORIZON HOTELS &amp; RESORTS. ALL RIGHTS RESERVED.</p><p class="sub-footer">XDCS2054N INTRODUCTION TO CLOUD COMPUTING • BOOKING SERVICE INTERFACE</p></div></footer>
+<script>
+const BOOKING_SERVICE_URL = "http://172.16.148.64:3000";
+const form = document.getElementById("reservationForm");
+const guestId = document.getElementById("guest_id");
+const roomType = document.getElementById("room_type");
+const checkIn = document.getElementById("check_in_date");
+const checkOut = document.getElementById("check_out_date");
+const roomsInput = document.getElementById("number_of_rooms");
+const guestsInput = document.getElementById("number_of_guests");
+const notice = document.getElementById("bookingNotice");
+const now = new Date();
+const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+checkIn.min = today; checkOut.min = today;
 
-  <header class="site-header">
-    <div class="header-inner">
-      <h1>🏨 Grand Horizon Hotel</h1>
-      <p class="tagline">Comfortable stays in the heart of Kuala Lumpur since 1998</p>
-      <span class="badge">Book Online</span>
-    </div>
-  </header>
+function calculateTotal() {
+  const option = roomType.options[roomType.selectedIndex];
+  const rate = Number(option?.dataset.rate || 0);
+  const nights = checkIn.value && checkOut.value ? Math.round((new Date(checkOut.value + "T00:00:00") - new Date(checkIn.value + "T00:00:00")) / 86400000) : 0;
+  const rooms = Math.max(1, Number(roomsInput.value || 1));
+document.getElementById("summaryId").textContent = guestId.value || "Not entered";
+  document.getElementById("summaryRoom").textContent = roomType.value || "None Selected";
+  document.getElementById("summaryRate").textContent = `RM ${rate.toFixed(2)}`;
+  document.getElementById("summaryRooms").textContent = String(rooms);
+  document.getElementById("summaryGuests").textContent = String(Math.max(1, Number(guestsInput.value || 1)));
+  if (nights > 0 && rate > 0) {
+    document.getElementById("summaryDuration").textContent = `${nights} Night${nights === 1 ? "" : "s"}`;
+    const total = nights * rate * rooms;
+    document.getElementById("summaryTotal").textContent = `RM ${total.toFixed(2)}`;
+    return total;
+  }
+  document.getElementById("summaryDuration").textContent = "0 Nights";
+  document.getElementById("summaryTotal").textContent = "RM 0.00";
+  return 0;
+}
+[guestId, roomType, checkIn, checkOut, roomsInput, guestsInput].forEach(field => {
+  field.addEventListener("input", calculateTotal);
+  field.addEventListener("change", calculateTotal);
+});
+checkIn.addEventListener("change", () => { checkOut.min = checkIn.value || today; if (checkOut.value && checkOut.value <= checkIn.value) checkOut.value = ""; calculateTotal(); });
 
-  <main class="room-container">
-
-    <section class="category">
-      <h2>🛏️ Rooms &amp; Suites</h2>
-      <div class="room-grid">
-
-        <div class="room-card popular">
-          <div class="card-top">
-            <h3>Deluxe King Room</h3>
-            <span class="price">RM 260 / night</span>
-          </div>
-          <p>King bed, city view, work desk, free Wi-Fi. Sleeps 2.</p>
-          <span class="tag">⭐ Most Booked</span>
-        </div>
-
-        <div class="room-card">
-          <div class="card-top">
-            <h3>Standard Queen Room</h3>
-            <span class="price">RM 180 / night</span>
-          </div>
-          <p>Queen bed, air-conditioning, private bathroom. Sleeps 2.</p>
-        </div>
-
-        <div class="room-card">
-          <div class="card-top">
-            <h3>Family Suite</h3>
-            <span class="price">RM 420 / night</span>
-          </div>
-          <p>Two bedrooms, living area and kitchenette. Sleeps 4.</p>
-        </div>
-
-        <div class="room-card">
-          <div class="card-top">
-            <h3>Executive Suite</h3>
-            <span class="price">RM 550 / night</span>
-          </div>
-          <p>Top-floor suite with lounge access and bathtub. Sleeps 2.</p>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="category">
-      <h2>🧳 Add-ons</h2>
-      <div class="room-grid">
-
-        <div class="room-card">
-          <div class="card-top">
-            <h3>Breakfast Buffet</h3>
-            <span class="price">RM 35 / person</span>
-          </div>
-          <p>Local and international spread, served 6:30 am – 10:30 am</p>
-        </div>
-
-        <div class="room-card">
-          <div class="card-top">
-            <h3>Airport Transfer</h3>
-            <span class="price">RM 60</span>
-          </div>
-          <p>Private car pick-up from KLIA or KLIA2</p>
-        </div>
-
-        <div class="room-card">
-          <div class="card-top">
-            <h3>Late Checkout</h3>
-            <span class="price">RM 50</span>
-          </div>
-          <p>Keep your room until 4:00 pm, subject to availability</p>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="site-footer">
-    <p>Grand Horizon Hotel · Jalan Bukit Bintang, Kuala Lumpur</p>
-    <p>Reservations by <strong>Grand Horizon</strong></p>
-  </footer>
-
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!checkIn.value || !checkOut.value || checkOut.value <= checkIn.value) {
+    notice.style.display = "block"; notice.className = "response-box error"; notice.textContent = "Check-out date must be later than check-in date."; return;
+  }
+  const payload = {
+    guest_id: Number(guestId.value),
+    check_in_date: checkIn.value,
+    check_out_date: checkOut.value,
+    room_type: roomType.value,
+    number_of_rooms: Number(roomsInput.value),
+    number_of_guests: Number(guestsInput.value),
+    payment_method: document.getElementById("payment_method").value,
+    total_paid: calculateTotal()
+  };
+  try {
+    const response = await fetch(`${BOOKING_SERVICE_URL}/api/v1/bookings`, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || `Reservation failed (HTTP ${response.status}).`);
+    notice.style.display = "block"; notice.className = "response-box success";
+    notice.textContent = `Reservation saved successfully. Booking ID: ${result.booking_id}.`;
+  } catch (err) {
+    console.error("Reservation submission error:", err);
+    notice.style.display = "block"; notice.className = "response-box error";
+    notice.textContent = err.message || "Unable to connect to the Booking Service. Your reservation was not saved.";
+  }
+});
+calculateTotal();
+</script>
 </body>
 </html>

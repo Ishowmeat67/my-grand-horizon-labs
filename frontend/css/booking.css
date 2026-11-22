@@ -1,0 +1,437 @@
+/* Color Palette & Typographic Hierarchy */
+:root {
+  --gold: #c5a059;
+  --gold-hover: #b08d48;
+  --dark-charcoal: #121212;
+  --panel-bg: rgba(18, 18, 18, 0.94);
+  --border-gold: rgba(197, 160, 89, 0.25);
+  --border-light: rgba(255, 255, 255, 0.12);
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Montserrat', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--dark-charcoal);
+  color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1. Top Utility Bar */
+.top-bar {
+  background: #080808;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  padding: 0.5rem 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.top-bar-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lang-switch span {
+  margin-right: 1.25rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.lang-switch span:hover {
+  color: var(--gold);
+}
+
+.top-bar-links a {
+  margin-left: 1.5rem;
+  color: #aaa;
+  text-decoration: none;
+}
+
+.top-bar-links a:hover {
+  color: var(--gold);
+}
+
+/* 2. Centered Luxury Header */
+.main-header {
+  background: rgba(18, 18, 18, 0.95);
+  padding: 1.4rem 2rem;
+  border-bottom: 1px solid var(--border-gold);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+}
+
+.header-inner {
+  max-width: 100%;
+  padding: 0 3rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: flex-start;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: flex-end;
+}
+
+.nav-left a,
+.nav-right a {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: #dedede;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-left a:hover,
+.nav-right a:hover {
+  color: var(--gold);
+}
+
+.brand-logo {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
+}
+
+.logo-emblem {
+  color: var(--gold);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.logo-title {
+  font-family: var(--font-serif);
+  font-size: 1.95rem;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.logo-sub {
+  font-size: 0.62rem;
+  letter-spacing: 0.38em;
+  color: var(--gold);
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.btn-book {
+  background: var(--gold);
+  color: #000000 !important;
+  padding: 0.55rem 1.4rem;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em;
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-book:hover {
+  background: var(--gold-hover);
+}
+
+/* 3. Hero & Container */
+.hero-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(18, 18, 18, 0.78);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+}
+
+.booking-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+/* Header Text */
+.booking-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.booking-pretitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.booking-title {
+  font-family: var(--font-serif);
+  font-size: 2.85rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0.5rem 0;
+  letter-spacing: 0.05em;
+}
+
+.gold-divider {
+  width: 48px;
+  height: 2px;
+  background: var(--gold);
+  margin: 0.8rem auto 1rem;
+}
+
+.booking-intro {
+  font-size: 0.88rem;
+  color: #ccc;
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.booking-card-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.form-card
+{
+  background: var(--panel-bg);
+  border: 1px solid var(--border-gold);
+  padding: 2.5rem;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+}
+
+.summary-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-gold);
+  padding: 2.5rem;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  min-width: 500px
+}
+
+.form-title,
+.summary-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field.full-width {
+  margin-bottom: 1.5rem;
+}
+
+.input-field label {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 0.45rem;
+  font-weight: 600;
+}
+
+.input-field input,
+.input-field select,
+.input-field textarea {
+  background: #1c1c1c;
+  border: 1px solid var(--border-light);
+  color: #ffffff;
+  padding: 0.8rem 1rem;
+  font-size: 0.85rem;
+  outline: none;
+  font-family: var(--font-sans);
+  transition: border-color 0.2s;
+}
+
+.input-field input:focus,
+.input-field select:focus,
+.input-field textarea:focus {
+  border-color: var(--gold);
+}
+
+.field-hint {
+  font-size: 0.68rem;
+  color: #888;
+  margin-top: 0.35rem;
+}
+
+.field-hint a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.field-hint a:hover {
+  text-decoration: underline;
+}
+
+.btn-submit {
+  width: 100%;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-sans);
+}
+
+.btn-submit:hover {
+  background: var(--gold-hover);
+  transform: translateY(-1px);
+}
+
+/* Folio Summary Side */
+.summary-divider {
+  height: 1px;
+  background: var(--border-gold);
+  margin: 1.25rem 0;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  font-size: 0.8rem;
+}
+
+.summary-item .label {
+  color: #999;
+}
+
+.summary-item .value {
+  color: #fff;
+  font-weight: 500;
+}
+
+.summary-item.total {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.summary-item.total .value {
+  color: var(--gold);
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+}
+
+.guarantee-box {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(197, 160, 89, 0.08);
+  border: 1px solid var(--border-gold);
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.guarantee-icon {
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+
+.guarantee-box p {
+  font-size: 0.72rem;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+.response-box {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--gold);
+  background: rgba(197, 160, 89, 0.15);
+  color: #ffffff;
+  line-height: 1.5;
+}
+
+/* 4. Footer */
+.main-footer {
+  background: #090909;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.8rem 2rem;
+  text-align: center;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: #666;
+}
+
+.sub-footer {
+  color: var(--gold);
+  opacity: 0.7;
+  margin-top: 0.35rem;
+}
+
+/* Responsiveness */
+@media (max-width: 1500px) {
+  .booking-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .header-inner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .nav-left, .nav-right {
+    display: none;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
