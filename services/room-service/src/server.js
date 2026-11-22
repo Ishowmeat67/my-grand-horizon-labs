@@ -6,13 +6,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 3002;
+
 
 // Credentials come ONLY from environment variables (set in docker-compose.yml
 // from your .env file). No fallback passwords are hardcoded here.
 const required = ['DB_USER', 'DB_PASSWORD', 'DB_NAME'];
 const missing  = required.filter((key) => !process.env[key]);
-if (missing.length > 0) {
+if (missing.length > 0 && process.env.NODE_ENV !== 'test') {
   console.error(`[room-service] Missing required environment variables: ${missing.join(', ')}`);
   process.exit(1); // docker compose "restart: on-failure" will retry
 }
@@ -91,6 +91,30 @@ app.get('/api/rooms/:id', async (req, res) => {
   }
 });
 
-app.listen(PORT, () =>
-  console.log(`[room-service] Running on http://localhost:${PORT}`)
-);
+// ===== RATING VALIDATION (add above app.listen) =====
+function validateRating(rating) {
+  if (rating === undefined || rating === null) {
+    return { valid: false, error: 'Rating is required' };
+  }
+  if (typeof rating !== 'number') {
+    return { valid: false, error: 'Rating must be a number' };
+  }
+  if (!Number.isInteger(rating)) {
+    return { valid: false, error: 'Rating must be a whole number' };
+  }
+  if (rating < 1 || rating > 5) {
+    return { valid: false, error: 'Rating must be between 1 and 5' };
+  }
+  return { valid: true };
+}
+
+const PORT = process.env.PORT || 3002;
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () =>
+    console.log(`[menu-service] Running on http://localhost:${PORT}`)
+  );
+}
+
+if (process.env.NODE_ENV === 'test') {
+  module.exports = { validateRating };
+}
