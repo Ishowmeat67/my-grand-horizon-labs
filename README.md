@@ -192,6 +192,17 @@ docker compose version
 git --version
 ~~~
 
+
+Key design decisions
+- Room types and rooms are separate tables. The price belongs to the type; a booking reserves a specific room.
+- Holds live in Redis with a 15-minute expiry, so abandoned reservations release the room on their own. Confirmed bookings are permanent documents in
+MongoDB.
+- The server decides prices. Room rates come from the Room Service and add-on prices from the server, never from the request.
+- Double-booking is prevented by checking date overlap against confirmed bookings and other guests' active holds.
+- No secrets in code. All credentials come from environment variables defined in .env.
+
+
+
 ## ⚙️ Environment Configuration
 
 Create a .env file in the project root:
