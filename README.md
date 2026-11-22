@@ -193,7 +193,9 @@ git --version
 ~~~
 
 
-Key design decisions
+
+## Key design decisions
+
 - Room types and rooms are separate tables. The price belongs to the type; a booking reserves a specific room.
 - Holds live in Redis with a 15-minute expiry, so abandoned reservations release the room on their own. Confirmed bookings are permanent documents in
 MongoDB.
